@@ -16,8 +16,8 @@ import (
 var httpClient = &http.Client{Timeout: 20 * time.Second}
 
 /**
-* Checks if slice or array contains an item
-* ( there is not build-in function in Go )
+* Checks if a slice or an array contains an item
+* ( there is no build-in function in Go )
  */
 func contains(s []string, str string) bool {
 	for _, v := range s {
@@ -29,7 +29,7 @@ func contains(s []string, str string) bool {
 }
 
 func main() {
-	// Array that holds qnique domains
+	// Array that holds unique domains
 	domainList := []string{}
 	// Inits reader
 	reader := bufio.NewReader(os.Stdin)
@@ -46,21 +46,21 @@ func main() {
 
 	defer res.Body.Close()
 
-	// The patters finds domains in the HTML
+	// The pattern finds domains in the HTML code
 	pattern := "<TD>(.+)</TD>"
 
 	body, err := ioutil.ReadAll(res.Body)
 
-	// Splits HTML body string to array of strings
+	// Splits HTML body string to an array of strings
 	rows := strings.Split(string(body), "\n")
 	// Sets pattern for domains tag
 	ms := regexp.MustCompile(`<TD>(.+)</TD>`)
 
 	for _, row := range rows {
 		match, _ := regexp.MatchString(pattern, row)
-		// If the tag found and string not contains style attribute
+		// If the tag found and string does not contain style attribute
 		if match && !strings.Contains(row, "style=") {
-			// Splits the string into array of string that holds domains
+			// Splits the string into an array of strings that holds domains
 			domains := strings.Split(ms.ReplaceAllString(row, "$1"), "<BR>")
 
 			for _, domain := range domains {
